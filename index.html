@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI聊天网站原型集</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #e879f9 0%, #c084fc 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .prototype-container {
+            height: 600px;
+        }
+        .prototype-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .prototype-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        .feature-tag {
+            background: rgba(192, 132, 252, 0.1);
+            border: 1px solid rgba(192, 132, 252, 0.2);
+            transition: all 0.3s ease;
+        }
+        .feature-tag:hover {
+            background: rgba(192, 132, 252, 0.2);
+        }
+        .scrollbar-custom::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollbar-custom::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .scrollbar-custom::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen overflow-x-hidden">
+    <!-- 装饰背景 -->
+    <div class="fixed top-0 right-0 -z-10 w-1/2 h-1/2 bg-gradient-to-r from-purple-600/20 to-pink-600/20 blur-3xl"></div>
+    <div class="fixed bottom-0 left-0 -z-10 w-1/2 h-1/2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 blur-3xl"></div>
+
+    <!-- 顶部导航 -->
+    <header class="glass-effect sticky top-0 z-50 py-4 px-6 mb-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold gradient-text flex items-center">
+                <i class="fas fa-robot mr-2"></i>
+                AI聊天网站原型集
+            </h1>
+            <div class="flex space-x-4">
+                <button class="px-4 py-2 glass-effect rounded-full hover:bg-opacity-20 transition-all duration-300">
+                    <i class="fas fa-moon mr-2"></i>主题
+                </button>
+                <a href="https://github.com/yourusername/ai-chat-prototype" target="_blank" 
+                   class="px-4 py-2 glass-effect rounded-full hover:bg-opacity-20 transition-all duration-300">
+                    <i class="fab fa-github mr-2"></i>GitHub
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 pb-12">
+        <!-- 主聊天界面 -->
+        <section class="mb-24">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold gradient-text mb-2">主聊天界面</h2>
+                    <p class="text-gray-400">集成了聊天、历史记录和模型选择的完整界面</p>
+                </div>
+                <div class="flex space-x-2">
+                    <span class="feature-tag px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-columns mr-1"></i>三栏布局
+                    </span>
+                    <span class="feature-tag px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-desktop mr-1"></i>PC优化
+                    </span>
+                </div>
+            </div>
+            <div class="prototype-card rounded-2xl overflow-hidden">
+                <iframe src="chat.html" frameborder="0" class="w-full prototype-container"></iframe>
+            </div>
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="glass-effect rounded-xl p-4">
+                    <h3 class="font-medium mb-2 flex items-center">
+                        <i class="fas fa-layer-group text-purple-400 mr-2"></i>
+                        布局特点
+                    </h3>
+                    <p class="text-sm text-gray-400">采用三栏式布局，左侧为聊天列表，中间为对话区域，右侧为上下文信息</p>
+                </div>
+                <div class="glass-effect rounded-xl p-4">
+                    <h3 class="font-medium mb-2 flex items-center">
+                        <i class="fas fa-magic text-purple-400 mr-2"></i>
+                        交互设计
+                    </h3>
+                    <p class="text-sm text-gray-400">支持侧边栏折叠、实时输入反馈、快捷操作等多种交互方式</p>
+                </div>
+                <div class="glass-effect rounded-xl p-4">
+                    <h3 class="font-medium mb-2 flex items-center">
+                        <i class="fas fa-palette text-purple-400 mr-2"></i>
+                        视觉风格
+                    </h3>
+                    <p class="text-sm text-gray-400">磨砂玻璃效果配合渐变元素，营造现代简约的视觉体验</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 登录界面 -->
+        <section class="mb-24">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold gradient-text mb-2">登录界面</h2>
+                    <p class="text-gray-400">用户认证和注册入口</p>
+                </div>
+                <div class="flex space-x-2">
+                    <span class="feature-tag px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-user-shield mr-1"></i>安全认证
+                    </span>
+                    <span class="feature-tag px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-sign-in-alt mr-1"></i>快速接入
+                    </span>
+                </div>
+            </div>
+            <div class="prototype-card rounded-2xl overflow-hidden">
+                <iframe src="login.html" frameborder="0" class="w-full prototype-container"></iframe>
+            </div>
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="glass-effect rounded-xl p-4">
+                    <h3 class="font-medium mb-2 flex items-center">
+                        <i class="fas fa-shield-alt text-purple-400 mr-2"></i>
+                        安全特性
+                    </h3>
+                    <p class="text-sm text-gray-400">支持多种登录方式，包括邮箱、社交账号登录，确保账户安全</p>
+                </div>
+                <div class="glass-effect rounded-xl p-4">
+                    <h3 class="font-medium mb-2 flex items-center">
+                        <i class="fas fa-mobile-alt text-purple-400 mr-2"></i>
+                        响应式设计
+                    </h3>
+                    <p class="text-sm text-gray-400">适配各种设备尺寸，提供流畅的登录体验</p>
+                </div>
+                <div class="glass-effect rounded-xl p-4">
+                    <h3 class="font-medium mb-2 flex items-center">
+                        <i class="fas fa-user-plus text-purple-400 mr-2"></i>
+                        注册流程
+                    </h3>
+                    <p class="text-sm text-gray-400">简化的注册流程，快速创建新账户</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 设置界面 -->
+        <section class="mb-24">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold gradient-text mb-2">设置界面</h2>
+                    <p class="text-gray-400">个性化配置和系统设置</p>
+                </div>
+                <div class="flex space-x-2">
+                    <span class="feature-tag px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-sliders-h mr-1"></i>全面配置
+                    </span>
+                    <span class="feature-tag px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-user-cog mr-1"></i>个性化
+                    </span>
+                </div>
+            </div>
+            <div class="prototype-card rounded-2xl overflow-hidden">
+                <iframe src="settings.html" frameborder="0" class="w-full prototype-container"></iframe>
+            </div>
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="glass-effect rounded-xl p-4">
+                    <h3 class="font-medium mb-2 flex items-center">
+                        <i class="fas fa-cogs text-purple-400 mr-2"></i>
+                        系统设置
+                    </h3>
+                    <p class="text-sm text-gray-400">提供丰富的系统配置选项，包括主题、语言等设置</p>
+                </div>
+                <div class="glass-effect rounded-xl p-4">
+                    <h3 class="font-medium mb-2 flex items-center">
+                        <i class="fas fa-user-circle text-purple-400 mr-2"></i>
+                        账户管理
+                    </h3>
+                    <p class="text-sm text-gray-400">完整的账户信息管理，包括个人资料、隐私设置等</p>
+                </div>
+                <div class="glass-effect rounded-xl p-4">
+                    <h3 class="font-medium mb-2 flex items-center">
+                        <i class="fas fa-bell text-purple-400 mr-2"></i>
+                        通知设置
+                    </h3>
+                    <p class="text-sm text-gray-400">自定义通知偏好，控制消息提醒方式</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 帮助界面 -->
+        <section class="mb-24">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold gradient-text mb-2">帮助与支持</h2>
+                    <p class="text-gray-400">用户指南和帮助文档</p>
+                </div>
+                <div class="flex space-x-2">
+                    <span class="feature-tag px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-question-circle mr-1"></i>使用指南
+                    </span>
+                    <span class="feature-tag px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-hands-helping mr-1"></i>支持服务
+                    </span>
+                </div>
+            </div>
+            <div class="prototype-card rounded-2xl overflow-hidden">
+                <iframe src="help.html" frameborder="0" class="w-full prototype-container"></iframe>
+            </div>
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="glass-effect rounded-xl p-4">
+                    <h3 class="font-medium mb-2 flex items-center">
+                        <i class="fas fa-book text-purple-400 mr-2"></i>
+                        使用文档
+                    </h3>
+                    <p class="text-sm text-gray-400">详细的功能说明和使用教程，帮助用户快速上手</p>
+                </div>
+                <div class="glass-effect rounded-xl p-4">
+                    <h3 class="font-medium mb-2 flex items-center">
+                        <i class="fas fa-life-ring text-purple-400 mr-2"></i>
+                        问题解答
+                    </h3>
+                    <p class="text-sm text-gray-400">常见问题解答和故障排除指南</p>
+                </div>
+                <div class="glass-effect rounded-xl p-4">
+                    <h3 class="font-medium mb-2 flex items-center">
+                        <i class="fas fa-headset text-purple-400 mr-2"></i>
+                        客户支持
+                    </h3>
+                    <p class="text-sm text-gray-400">提供多种支持渠道，确保用户获得及时帮助</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass-effect py-8 px-6">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <h3 class="gradient-text text-xl font-bold mb-2">AI聊天网站</h3>
+                    <p class="text-gray-400">打造智能对话新体验</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-gray-300 transition-colors">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-300 transition-colors">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-300 transition-colors">
+                        <i class="fas fa-envelope text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400 text-sm">
+                <p>© 2024 AI聊天网站. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 

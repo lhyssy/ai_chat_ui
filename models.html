@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI模型 | AI聊天网站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #e879f9 0%, #c084fc 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .input-gradient {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .input-gradient:focus {
+            border-color: rgba(192, 132, 252, 0.5);
+            box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.2);
+        }
+        .model-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .model-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.07);
+        }
+        .model-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #e879f9, #c084fc, #a855f7);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .model-card:hover::before {
+            opacity: 1;
+        }
+        .tag {
+            background: rgba(192, 132, 252, 0.1);
+            border: 1px solid rgba(192, 132, 252, 0.2);
+            transition: all 0.3s ease;
+        }
+        .tag:hover {
+            background: rgba(192, 132, 252, 0.2);
+        }
+        .scrollbar-custom::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollbar-custom::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .scrollbar-custom::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .badge-pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <!-- 装饰背景 -->
+    <div class="fixed top-0 right-0 -z-10 w-1/2 h-1/2 bg-gradient-to-r from-purple-600/20 to-pink-600/20 blur-3xl"></div>
+    <div class="fixed bottom-0 left-0 -z-10 w-1/2 h-1/2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 blur-3xl"></div>
+
+    <div class="flex h-screen">
+        <!-- 侧边栏 -->
+        <aside class="w-64 lg:w-80 glass-effect hidden md:flex flex-col border-r border-gray-700">
+            <!-- 侧边栏头部 -->
+            <div class="p-4 border-b border-gray-700">
+                <h1 class="text-xl font-bold gradient-text flex items-center">
+                    <i class="fas fa-robot mr-2"></i> AI聊天助手
+                </h1>
+            </div>
+            
+            <!-- 导航菜单 -->
+            <nav class="p-4 space-y-2">
+                <a href="chat.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect hover:bg-opacity-20 transition-all duration-300">
+                    <i class="fas fa-comments text-purple-400"></i>
+                    <span>聊天</span>
+                </a>
+                <a href="history.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect hover:bg-opacity-20 transition-all duration-300">
+                    <i class="fas fa-history text-purple-400"></i>
+                    <span>历史记录</span>
+                </a>
+                <a href="models.html" class="flex items-center space-x-2 p-2 rounded-lg btn-gradient">
+                    <i class="fas fa-robot"></i>
+                    <span>AI模型</span>
+                </a>
+                <a href="settings.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect hover:bg-opacity-20 transition-all duration-300">
+                    <i class="fas fa-cog text-purple-400"></i>
+                    <span>设置</span>
+                </a>
+                <a href="help.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect hover:bg-opacity-20 transition-all duration-300">
+                    <i class="fas fa-question-circle text-purple-400"></i>
+                    <span>帮助</span>
+                </a>
+            </nav>
+            
+            <!-- 用户信息 -->
+            <div class="mt-auto p-4 border-t border-gray-700">
+                <div class="flex items-center space-x-3">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=80&q=80" 
+                         alt="用户头像" 
+                         class="w-10 h-10 rounded-full">
+                    <div class="flex-1">
+                        <div class="font-medium">张小明</div>
+                        <div class="text-sm text-gray-400">免费用户</div>
+                    </div>
+                    <button class="text-gray-400 hover:text-gray-300">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <!-- 顶部导航 -->
+            <header class="glass-effect p-4 flex items-center justify-between border-b border-gray-700">
+                <div class="flex items-center">
+                    <!-- 移动端菜单按钮 -->
+                    <button class="md:hidden text-gray-400 hover:text-gray-300 mr-4" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h2 class="text-xl font-semibold gradient-text">AI模型</h2>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button class="btn-gradient px-4 py-2 rounded-lg flex items-center">
+                        <i class="fas fa-sync-alt mr-2"></i>
+                        <span>刷新状态</span>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- 模型列表 -->
+            <div class="flex-1 overflow-y-auto p-4 md:p-6 scrollbar-custom">
+                <div class="max-w-7xl mx-auto">
+                    <!-- 搜索和筛选 -->
+                    <div class="mb-6">
+                        <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
+                            <div class="relative flex-grow">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i class="fas fa-search text-gray-400"></i>
+                                </div>
+                                <input type="search" class="pl-10 block w-full px-4 py-2 rounded-lg input-gradient" placeholder="搜索AI模型...">
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="px-4 py-2 glass-effect rounded-lg hover:bg-opacity-20 transition-all duration-300 flex items-center">
+                                    <i class="fas fa-filter mr-2 text-purple-400"></i>
+                                    <span>筛选</span>
+                                </button>
+                                <button class="px-4 py-2 glass-effect rounded-lg hover:bg-opacity-20 transition-all duration-300 flex items-center">
+                                    <i class="fas fa-sort mr-2 text-purple-400"></i>
+                                    <span>排序</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <span class="tag px-3 py-1 rounded-full text-sm flex items-center">
+                                全部模型
+                                <i class="fas fa-times ml-2"></i>
+                            </span>
+                            <span class="tag px-3 py-1 rounded-full text-sm flex items-center">
+                                免费可用
+                                <i class="fas fa-times ml-2"></i>
+                            </span>
+                            <span class="tag px-3 py-1 rounded-full text-sm flex items-center">
+                                中文支持
+                                <i class="fas fa-times ml-2"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- AI模型分类 -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-medium mb-4 gradient-text">推荐模型</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- ChatGPT-4 -->
+                            <div class="model-card glass-effect rounded-xl p-4">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mr-3">
+                                            <i class="fas fa-robot text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">ChatGPT-4</h4>
+                                            <div class="text-sm text-gray-400">OpenAI</div>
+                                        </div>
+                                    </div>
+                                    <span class="badge-pulse px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-300">在线</span>
+                                </div>
+                                <p class="text-sm text-gray-300 mb-4">
+                                    最新版本的GPT-4模型，支持更强大的理解能力和创造力，适合各种复杂任务。
+                                </p>
+                                <div class="grid grid-cols-2 gap-2 mb-4">
+                                    <div class="glass-effect rounded-lg p-2 text-center text-sm">
+                                        <div class="text-gray-400 mb-1">响应速度</div>
+                                        <div class="text-purple-400">
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt text-gray-600"></i>
+                                        </div>
+                                    </div>
+                                    <div class="glass-effect rounded-lg p-2 text-center text-sm">
+                                        <div class="text-gray-400 mb-1">用户评分</div>
+                                        <div class="text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="text-sm text-purple-300">
+                                        <i class="fas fa-coins mr-1"></i> 专业版可用
+                                    </div>
+                                    <button class="btn-gradient px-3 py-1.5 rounded-lg text-sm">
+                                        选择
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- DeepSeek -->
+                            <div class="model-card glass-effect rounded-xl p-4">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mr-3">
+                                            <i class="fas fa-microchip text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">DeepSeek-7B</h4>
+                                            <div class="text-sm text-gray-400">DeepSeek AI</div>
+                                        </div>
+                                    </div>
+                                    <span class="badge-pulse px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-300">在线</span>
+                                </div>
+                                <p class="text-sm text-gray-300 mb-4">
+                                    高效的中文大语言模型，擅长代码生成和问题解答，尤其适合中文交互场景。
+                                </p>
+                                <div class="grid grid-cols-2 gap-2 mb-4">
+                                    <div class="glass-effect rounded-lg p-2 text-center text-sm">
+                                        <div class="text-gray-400 mb-1">响应速度</div>
+                                        <div class="text-purple-400">
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt"></i>
+                                        </div>
+                                    </div>
+                                    <div class="glass-effect rounded-lg p-2 text-center text-sm">
+                                        <div class="text-gray-400 mb-1">用户评分</div>
+                                        <div class="text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="text-sm text-green-300">
+                                        <i class="fas fa-check-circle mr-1"></i> 免费可用
+                                    </div>
+                                    <button class="btn-gradient px-3 py-1.5 rounded-lg text-sm">
+                                        选择
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Claude -->
+                            <div class="model-card glass-effect rounded-xl p-4">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center mr-3">
+                                            <i class="fas fa-brain text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">Claude 3</h4>
+                                            <div class="text-sm text-gray-400">Anthropic</div>
+                                        </div>
+                                    </div>
+                                    <span class="badge-pulse px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-300">在线</span>
+                                </div>
+                                <p class="text-sm text-gray-300 mb-4">
+                                    具有安全特性的AI助手，擅长长对话和复杂指令，提供全面且平衡的回答。
+                                </p>
+                                <div class="grid grid-cols-2 gap-2 mb-4">
+                                    <div class="glass-effect rounded-lg p-2 text-center text-sm">
+                                        <div class="text-gray-400 mb-1">响应速度</div>
+                                        <div class="text-purple-400">
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt text-gray-600"></i>
+                                        </div>
+                                    </div>
+                                    <div class="glass-effect rounded-lg p-2 text-center text-sm">
+                                        <div class="text-gray-400 mb-1">用户评分</div>
+                                        <div class="text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="text-sm text-purple-300">
+                                        <i class="fas fa-coins mr-1"></i> 专业版可用
+                                    </div>
+                                    <button class="btn-gradient px-3 py-1.5 rounded-lg text-sm">
+                                        选择
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 更多模型分类 -->
+                    <div>
+                        <h3 class="text-lg font-medium mb-4 gradient-text">所有模型</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- 更多模型卡片 -->
+                            <div class="model-card glass-effect rounded-xl p-4">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-teal-500 flex items-center justify-center mr-3">
+                                            <i class="fas fa-chart-network text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium">LLaMA-3</h4>
+                                            <div class="text-sm text-gray-400">Meta AI</div>
+                                        </div>
+                                    </div>
+                                    <span class="px-2 py-1 text-xs rounded-full bg-yellow-500/20 text-yellow-300">维护中</span>
+                                </div>
+                                <p class="text-sm text-gray-300 mb-4">
+                                    Meta的开源大语言模型，适合多种应用场景，平衡性能和资源占用。
+                                </p>
+                                <div class="grid grid-cols-2 gap-2 mb-4">
+                                    <div class="glass-effect rounded-lg p-2 text-center text-sm">
+                                        <div class="text-gray-400 mb-1">响应速度</div>
+                                        <div class="text-purple-400">
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt"></i>
+                                            <i class="fas fa-bolt text-gray-600"></i>
+                                            <i class="fas fa-bolt text-gray-600"></i>
+                                        </div>
+                                    </div>
+                                    <div class="glass-effect rounded-lg p-2 text-center text-sm">
+                                        <div class="text-gray-400 mb-1">用户评分</div>
+                                        <div class="text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="text-sm text-green-300">
+                                        <i class="fas fa-check-circle mr-1"></i> 免费可用
+                                    </div>
+                                    <button class="glass-effect px-3 py-1.5 rounded-lg text-sm opacity-50 cursor-not-allowed">
+                                        暂不可用
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 底部分页 -->
+            <div class="glass-effect p-4 flex items-center justify-between border-t border-gray-700">
+                <div class="text-sm text-gray-400">
+                    显示 1-10 个，共 24 个模型
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button class="glass-effect px-3 py-1 rounded-lg text-sm disabled:opacity-50">
+                        <i class="fas fa-chevron-left mr-1"></i>
+                        上一页
+                    </button>
+                    <div class="flex items-center space-x-1">
+                        <button class="btn-gradient px-3 py-1 rounded-lg text-sm">1</button>
+                        <button class="glass-effect px-3 py-1 rounded-lg text-sm">2</button>
+                        <button class="glass-effect px-3 py-1 rounded-lg text-sm">3</button>
+                    </div>
+                    <button class="glass-effect px-3 py-1 rounded-lg text-sm">
+                        下一页
+                        <i class="fas fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 移动端侧边栏菜单 -->
+    <div class="fixed inset-0 z-50 md:hidden glass-effect transform -translate-x-full transition-transform duration-300" id="mobileMenu">
+        <div class="flex flex-col h-full">
+            <div class="p-4 border-b border-gray-700 flex justify-between items-center">
+                <h1 class="text-xl font-bold gradient-text">AI聊天助手</h1>
+                <button class="text-gray-400 hover:text-gray-300" onclick="toggleMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="p-4 space-y-2">
+                <a href="chat.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect">
+                    <i class="fas fa-comments text-purple-400"></i>
+                    <span>聊天</span>
+                </a>
+                <a href="history.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect">
+                    <i class="fas fa-history text-purple-400"></i>
+                    <span>历史记录</span>
+                </a>
+                <a href="models.html" class="flex items-center space-x-2 p-2 rounded-lg btn-gradient">
+                    <i class="fas fa-robot"></i>
+                    <span>AI模型</span>
+                </a>
+                <a href="settings.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect">
+                    <i class="fas fa-cog text-purple-400"></i>
+                    <span>设置</span>
+                </a>
+                <a href="help.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect">
+                    <i class="fas fa-question-circle text-purple-400"></i>
+                    <span>帮助</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('-translate-x-full');
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天历史 | AI聊天网站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #e879f9 0%, #c084fc 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .input-gradient {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .input-gradient:focus {
+            border-color: rgba(192, 132, 252, 0.5);
+            box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.2);
+        }
+        .history-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .history-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(232, 121, 249, 0.1), rgba(168, 85, 247, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .history-card:hover::before {
+            opacity: 1;
+        }
+        .skeleton {
+            animation: skeleton-loading 1s infinite alternate;
+        }
+        @keyframes skeleton-loading {
+            0% { background-color: rgba(255, 255, 255, 0.05); }
+            100% { background-color: rgba(255, 255, 255, 0.1); }
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        @media (max-width: 768px) {
+            .glass-effect {
+                backdrop-filter: blur(8px);
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen relative overflow-hidden">
+    <!-- 装饰背景 -->
+    <div class="absolute top-0 right-0 -z-10 w-1/2 h-1/2 bg-gradient-to-r from-purple-600/20 to-pink-600/20 blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 -z-10 w-1/2 h-1/2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 blur-3xl"></div>
+
+    <!-- 移动端侧边栏菜单 -->
+    <div class="mobile-menu fixed inset-0 z-50 md:hidden glass-effect">
+        <div class="flex flex-col h-full">
+            <!-- 移动端菜单内容 -->
+            <div class="p-4 border-b border-gray-700 flex justify-between items-center">
+                <h1 class="text-xl font-bold gradient-text">AI聊天助手</h1>
+                <button class="text-gray-400 hover:text-gray-300" onclick="toggleMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- 移动端导航链接 -->
+            <nav class="p-4 space-y-2">
+                <a href="chat.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect">
+                    <i class="fas fa-comments text-purple-400"></i>
+                    <span>聊天</span>
+                </a>
+                <a href="history.html" class="flex items-center space-x-2 p-2 rounded-lg btn-gradient">
+                    <i class="fas fa-history"></i>
+                    <span>历史记录</span>
+                </a>
+                <a href="models.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect">
+                    <i class="fas fa-robot text-purple-400"></i>
+                    <span>模型</span>
+                </a>
+                <a href="settings.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect">
+                    <i class="fas fa-cog text-purple-400"></i>
+                    <span>设置</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="flex h-screen">
+        <!-- 侧边栏 -->
+        <aside class="w-64 lg:w-80 glass-effect hidden md:flex flex-col">
+            <!-- 侧边栏头部 -->
+            <div class="p-4 border-b border-gray-700">
+                <h1 class="text-xl font-bold gradient-text flex items-center">
+                    <i class="fas fa-robot mr-2"></i> AI聊天助手
+                </h1>
+            </div>
+            
+            <!-- 导航菜单 -->
+            <nav class="p-4 space-y-2">
+                <a href="chat.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect hover:bg-opacity-20 transition-all duration-300">
+                    <i class="fas fa-comments text-purple-400"></i>
+                    <span>聊天</span>
+                </a>
+                <a href="history.html" class="flex items-center space-x-2 p-2 rounded-lg btn-gradient">
+                    <i class="fas fa-history"></i>
+                    <span>历史记录</span>
+                </a>
+                <a href="models.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect hover:bg-opacity-20 transition-all duration-300">
+                    <i class="fas fa-robot text-purple-400"></i>
+                    <span>模型</span>
+                </a>
+                <a href="settings.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect hover:bg-opacity-20 transition-all duration-300">
+                    <i class="fas fa-cog text-purple-400"></i>
+                    <span>设置</span>
+                </a>
+            </nav>
+
+            <!-- 用户信息 -->
+            <div class="mt-auto p-4 border-t border-gray-700">
+                <div class="flex items-center space-x-3">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=80&q=80" 
+                         alt="用户头像" 
+                         class="w-10 h-10 rounded-full">
+                    <div class="flex-1">
+                        <div class="font-medium">张小明</div>
+                        <div class="text-sm text-gray-400">免费用户</div>
+                    </div>
+                    <button class="text-gray-400 hover:text-gray-300">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <main class="flex-1 flex flex-col">
+            <!-- 顶部导航 -->
+            <header class="glass-effect p-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <button class="md:hidden text-gray-400 hover:text-gray-300 mr-4" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h2 class="text-xl font-semibold gradient-text">聊天历史</h2>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="relative">
+                        <input type="text" 
+                               placeholder="搜索历史记录..." 
+                               class="input-gradient rounded-lg py-2 px-4 pr-10 w-48 md:w-64 text-sm"
+                               onkeyup="searchHistory(this.value)">
+                        <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <button class="glass-effect p-2 rounded-lg hover:bg-opacity-20 transition-all duration-300">
+                        <i class="fas fa-filter text-gray-400"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- 历史记录内容 -->
+            <div class="flex-1 overflow-y-auto p-4">
+                <!-- 时间分组：今天 -->
+                <div class="mb-8 fade-in">
+                    <h3 class="text-sm text-gray-400 mb-4">今天</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- 历史记录卡片 -->
+                        <div class="history-card glass-effect rounded-xl p-4 cursor-pointer">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center">
+                                    <i class="fas fa-robot text-purple-400 mr-2"></i>
+                                    <span class="font-medium">AI应用开发建议</span>
+                                </div>
+                                <span class="text-xs text-gray-400">14:23</span>
+                            </div>
+                            <p class="text-sm text-gray-300 mb-3 line-clamp-2">讨论了AI聊天应用的技术架构选择，包括前端框架和后端服务的建议...</p>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="bg-purple-500/20 text-purple-300 px-2 py-1 rounded-full">ChatGPT-4</span>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-gray-400 hover:text-gray-300">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-gray-300">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-gray-300">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 加载中状态示例 -->
+                        <div class="history-card glass-effect rounded-xl p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="skeleton w-32 h-6 rounded"></div>
+                                <div class="skeleton w-16 h-4 rounded"></div>
+                            </div>
+                            <div class="skeleton w-full h-12 rounded mb-3"></div>
+                            <div class="flex items-center justify-between">
+                                <div class="skeleton w-20 h-6 rounded"></div>
+                                <div class="flex space-x-2">
+                                    <div class="skeleton w-6 h-6 rounded"></div>
+                                    <div class="skeleton w-6 h-6 rounded"></div>
+                                    <div class="skeleton w-6 h-6 rounded"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 时间分组：本周 -->
+                <div class="mb-8 fade-in">
+                    <h3 class="text-sm text-gray-400 mb-4">本周</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="history-card glass-effect rounded-xl p-4 cursor-pointer">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center">
+                                    <i class="fas fa-code text-purple-400 mr-2"></i>
+                                    <span class="font-medium">Python数据处理</span>
+                                </div>
+                                <span class="text-xs text-gray-400">周一</span>
+                            </div>
+                            <p class="text-sm text-gray-300 mb-3 line-clamp-2">探讨了Python中的数据处理最佳实践，包括pandas库的使用技巧...</p>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="bg-purple-500/20 text-purple-300 px-2 py-1 rounded-full">DeepSeek-7B</span>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-gray-400 hover:text-gray-300">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-gray-300">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-gray-300">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部分页 -->
+            <div class="glass-effect p-4 flex items-center justify-between">
+                <div class="text-sm text-gray-400">
+                    显示 1-10 条，共 24 条
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button class="glass-effect px-3 py-1 rounded-lg text-sm disabled:opacity-50">
+                        <i class="fas fa-chevron-left mr-1"></i>
+                        上一页
+                    </button>
+                    <div class="flex items-center space-x-1">
+                        <button class="btn-gradient px-3 py-1 rounded-lg text-sm">1</button>
+                        <button class="glass-effect px-3 py-1 rounded-lg text-sm">2</button>
+                        <button class="glass-effect px-3 py-1 rounded-lg text-sm">3</button>
+                    </div>
+                    <button class="glass-effect px-3 py-1 rounded-lg text-sm">
+                        下一页
+                        <i class="fas fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 移动端菜单切换
+        function toggleMobileMenu() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            mobileMenu.classList.toggle('active');
+        }
+
+        // 搜索历史记录
+        function searchHistory(query) {
+            // 实现搜索逻辑
+            console.log('Searching for:', query);
+        }
+    </script>
+</body>
+</html> 

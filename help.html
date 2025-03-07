@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帮助与关于 | AI聊天网站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #e879f9 0%, #c084fc 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .help-card {
+            transition: all 0.3s ease;
+        }
+        .help-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.07);
+        }
+        .icon-bg {
+            background: linear-gradient(135deg, rgba(192, 132, 252, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+        }
+        .scrollbar-custom::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollbar-custom::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .scrollbar-custom::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <!-- 装饰背景 -->
+    <div class="fixed top-0 right-0 -z-10 w-1/2 h-1/2 bg-gradient-to-r from-purple-600/20 to-pink-600/20 blur-3xl"></div>
+    <div class="fixed bottom-0 left-0 -z-10 w-1/2 h-1/2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 blur-3xl"></div>
+
+    <div class="flex h-screen">
+        <!-- 侧边栏 -->
+        <aside class="w-64 lg:w-80 glass-effect hidden md:flex flex-col border-r border-gray-700">
+            <!-- 侧边栏头部 -->
+            <div class="p-4 border-b border-gray-700">
+                <h1 class="text-xl font-bold gradient-text flex items-center">
+                    <i class="fas fa-robot mr-2"></i> AI聊天助手
+                </h1>
+            </div>
+            
+            <!-- 导航菜单 -->
+            <nav class="p-4 space-y-2">
+                <a href="chat.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect hover:bg-opacity-20 transition-all duration-300">
+                    <i class="fas fa-comments text-purple-400"></i>
+                    <span>聊天</span>
+                </a>
+                <a href="history.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect hover:bg-opacity-20 transition-all duration-300">
+                    <i class="fas fa-history text-purple-400"></i>
+                    <span>历史记录</span>
+                </a>
+                <a href="models.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect hover:bg-opacity-20 transition-all duration-300">
+                    <i class="fas fa-robot text-purple-400"></i>
+                    <span>AI模型</span>
+                </a>
+                <a href="settings.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect hover:bg-opacity-20 transition-all duration-300">
+                    <i class="fas fa-cog text-purple-400"></i>
+                    <span>设置</span>
+                </a>
+                <a href="help.html" class="flex items-center space-x-2 p-2 rounded-lg btn-gradient">
+                    <i class="fas fa-question-circle"></i>
+                    <span>帮助</span>
+                </a>
+            </nav>
+            
+            <!-- 用户信息 -->
+            <div class="mt-auto p-4 border-t border-gray-700">
+                <div class="flex items-center space-x-3">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=80&q=80" 
+                         alt="用户头像" 
+                         class="w-10 h-10 rounded-full">
+                    <div class="flex-1">
+                        <div class="font-medium">张小明</div>
+                        <div class="text-sm text-gray-400">免费用户</div>
+                    </div>
+                    <button class="text-gray-400 hover:text-gray-300">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <!-- 顶部导航 -->
+            <header class="glass-effect p-4 flex items-center justify-between border-b border-gray-700">
+                <div class="flex items-center">
+                    <!-- 移动端菜单按钮 -->
+                    <button class="md:hidden text-gray-400 hover:text-gray-300 mr-4" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h2 class="text-xl font-semibold gradient-text">帮助与关于</h2>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button class="btn-gradient px-4 py-2 rounded-lg flex items-center text-sm">
+                        <i class="fas fa-headset mr-2"></i>
+                        联系客服
+                    </button>
+                </div>
+            </header>
+            
+            <!-- 帮助内容区 -->
+            <div class="flex-1 overflow-y-auto p-4 scrollbar-custom">
+                <div class="max-w-4xl mx-auto">
+                    <!-- 快速入门 -->
+                    <section class="mb-12">
+                        <h2 class="text-2xl font-bold mb-6 gradient-text">快速入门</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="help-card glass-effect rounded-xl p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 icon-bg rounded-lg flex items-center justify-center text-purple-400">
+                                        <i class="fas fa-rocket text-xl"></i>
+                                    </div>
+                                    <h3 class="ml-4 text-lg font-semibold">开始使用</h3>
+                                </div>
+                                <p class="text-gray-300">了解如何快速开始使用AI聊天助手，包括账户注册、模型选择和基本对话操作。</p>
+                                <a href="#" class="mt-4 inline-flex items-center text-purple-400 hover:text-purple-300 transition-all duration-300">
+                                    查看详情
+                                    <i class="fas fa-arrow-right ml-2"></i>
+                                </a>
+                            </div>
+                            <div class="help-card glass-effect rounded-xl p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 icon-bg rounded-lg flex items-center justify-center text-purple-400">
+                                        <i class="fas fa-robot text-xl"></i>
+                                    </div>
+                                    <h3 class="ml-4 text-lg font-semibold">AI模型介绍</h3>
+                                </div>
+                                <p class="text-gray-300">了解不同AI模型的特点和适用场景，选择最适合您需求的模型。</p>
+                                <a href="#" class="mt-4 inline-flex items-center text-purple-400 hover:text-purple-300 transition-all duration-300">
+                                    查看详情
+                                    <i class="fas fa-arrow-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 常见问题 -->
+                    <section class="mb-12">
+                        <h2 class="text-2xl font-bold mb-6 gradient-text">常见问题</h2>
+                        <div class="space-y-4">
+                            <div class="help-card glass-effect rounded-xl p-6">
+                                <h3 class="text-lg font-semibold mb-2">如何选择合适的AI模型？</h3>
+                                <p class="text-gray-300 mb-4">根据您的具体需求选择合适的模型。例如，ChatGPT-4适合复杂问题解答，DeepSeek-7B适合代码生成，Claude-3适合长文本处理。</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-400">上次更新：2024-03-01</span>
+                                    <button class="text-purple-400 hover:text-purple-300 transition-all duration-300 flex items-center">
+                                        <i class="fas fa-thumbs-up mr-1"></i> 有帮助
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="help-card glass-effect rounded-xl p-6">
+                                <h3 class="text-lg font-semibold mb-2">如何保存和管理聊天记录？</h3>
+                                <p class="text-gray-300 mb-4">您可以在聊天界面点击收藏按钮保存重要对话，或在历史记录页面管理所有聊天记录。支持搜索、分类和导出功能。</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-400">上次更新：2024-03-01</span>
+                                    <button class="text-purple-400 hover:text-purple-300 transition-all duration-300 flex items-center">
+                                        <i class="fas fa-thumbs-up mr-1"></i> 有帮助
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="help-card glass-effect rounded-xl p-6">
+                                <h3 class="text-lg font-semibold mb-2">如何提升AI回答的质量？</h3>
+                                <p class="text-gray-300 mb-4">提供清晰、具体的问题描述，适时使用上下文提示，选择合适的模型，这些都能帮助获得更好的回答质量。</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-400">上次更新：2024-03-01</span>
+                                    <button class="text-purple-400 hover:text-purple-300 transition-all duration-300 flex items-center">
+                                        <i class="fas fa-thumbs-up mr-1"></i> 有帮助
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 联系我们 -->
+                    <section class="mb-12">
+                        <h2 class="text-2xl font-bold mb-6 gradient-text">联系我们</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="help-card glass-effect rounded-xl p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 icon-bg rounded-lg flex items-center justify-center text-purple-400">
+                                        <i class="fas fa-envelope text-xl"></i>
+                                    </div>
+                                    <h3 class="ml-4 text-lg font-semibold">电子邮件</h3>
+                                </div>
+                                <p class="text-gray-300">support@aichat.com</p>
+                                <p class="text-sm text-gray-400 mt-2">工作日24小时内回复</p>
+                            </div>
+                            <div class="help-card glass-effect rounded-xl p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 icon-bg rounded-lg flex items-center justify-center text-purple-400">
+                                        <i class="fab fa-weixin text-xl"></i>
+                                    </div>
+                                    <h3 class="ml-4 text-lg font-semibold">微信客服</h3>
+                                </div>
+                                <p class="text-gray-300">扫描二维码添加</p>
+                                <p class="text-sm text-gray-400 mt-2">在线时间：9:00-18:00</p>
+                            </div>
+                            <div class="help-card glass-effect rounded-xl p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 icon-bg rounded-lg flex items-center justify-center text-purple-400">
+                                        <i class="fas fa-comments text-xl"></i>
+                                    </div>
+                                    <h3 class="ml-4 text-lg font-semibold">在线客服</h3>
+                                </div>
+                                <p class="text-gray-300">点击右上角联系客服</p>
+                                <p class="text-sm text-gray-400 mt-2">24小时在线服务</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 关于我们 -->
+                    <section>
+                        <h2 class="text-2xl font-bold mb-6 gradient-text">关于我们</h2>
+                        <div class="glass-effect rounded-xl p-6">
+                            <div class="prose prose-invert max-w-none">
+                                <p class="mb-4 text-gray-300">AI聊天助手是一个致力于为用户提供高质量AI对话体验的平台。我们整合了多个领先的AI模型，为用户提供全方位的智能对话服务。</p>
+                                <p class="mb-4 text-gray-300">我们的使命是让AI技术更加普及和易用，帮助用户更好地利用AI提升工作效率和生活品质。</p>
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+                                    <div class="text-center p-4 glass-effect rounded-lg">
+                                        <div class="text-3xl font-bold gradient-text mb-2">100万+</div>
+                                        <div class="text-gray-300">注册用户</div>
+                                    </div>
+                                    <div class="text-center p-4 glass-effect rounded-lg">
+                                        <div class="text-3xl font-bold gradient-text mb-2">6+</div>
+                                        <div class="text-gray-300">AI模型</div>
+                                    </div>
+                                    <div class="text-center p-4 glass-effect rounded-lg">
+                                        <div class="text-3xl font-bold gradient-text mb-2">99.9%</div>
+                                        <div class="text-gray-300">服务可用性</div>
+                                    </div>
+                                    <div class="text-center p-4 glass-effect rounded-lg">
+                                        <div class="text-3xl font-bold gradient-text mb-2">24/7</div>
+                                        <div class="text-gray-300">客户支持</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 移动端侧边栏菜单 -->
+    <div class="fixed inset-0 z-50 md:hidden glass-effect transform -translate-x-full transition-transform duration-300" id="mobileMenu">
+        <div class="flex flex-col h-full">
+            <div class="p-4 border-b border-gray-700 flex justify-between items-center">
+                <h1 class="text-xl font-bold gradient-text">AI聊天助手</h1>
+                <button class="text-gray-400 hover:text-gray-300" onclick="toggleMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="p-4 space-y-2">
+                <a href="chat.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect">
+                    <i class="fas fa-comments text-purple-400"></i>
+                    <span>聊天</span>
+                </a>
+                <a href="history.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect">
+                    <i class="fas fa-history text-purple-400"></i>
+                    <span>历史记录</span>
+                </a>
+                <a href="models.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect">
+                    <i class="fas fa-robot text-purple-400"></i>
+                    <span>模型</span>
+                </a>
+                <a href="settings.html" class="flex items-center space-x-2 p-2 rounded-lg glass-effect">
+                    <i class="fas fa-cog text-purple-400"></i>
+                    <span>设置</span>
+                </a>
+                <a href="help.html" class="flex items-center space-x-2 p-2 rounded-lg btn-gradient">
+                    <i class="fas fa-question-circle"></i>
+                    <span>帮助</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('-translate-x-full');
+        }
+    </script>
+</body>
+</html> 

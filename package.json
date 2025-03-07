@@ -1,0 +1,12 @@
+{
+  "name": "ai-chat-ui",
+  "version": "1.0.0",
+  "description": "AI聊天网站原型集",
+  "scripts": {
+    "start": "npx serve"
+  },
+  "devDependencies": {
+    "serve": "^14.0.0"
+  },
+  "private": true
+} 
